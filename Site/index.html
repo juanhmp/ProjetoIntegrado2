@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Monitor Cardíaco</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-dark text-light">
+
+    <div class="container py-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-5">
+
+            <div>
+                <p class="text-secondary mb-1">
+                    SISTEMA DE MONITORAMENTO
+                </p>
+
+                <h1 class="fw-bold">
+                    Monitor Cardíaco
+                </h1>
+            </div>
+
+            <span
+                id="statusSistema"
+                class="badge bg-secondary p-3"
+            >
+                ● Aguardando conexão
+            </span>
+
+        </div>
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-3">
+
+                <div class="card bg-black text-light border-secondary h-100">
+
+                    <div class="card-body p-4">
+
+                        <p class="text-secondary">
+                            BPM Atual
+                        </p>
+
+                        <h1 class="display-3 fw-bold">
+                            <span id="bpm">--</span>
+                        </h1>
+
+                        <p class="text-secondary mb-0">
+                            Batimentos por minuto
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card bg-black text-light border-secondary h-100">
+
+                    <div class="card-body p-4">
+
+                        <p class="text-secondary">
+                            Classificação da IA
+                        </p>
+
+                        <h2>
+                            <span
+                                id="resultado"
+                                class="badge bg-secondary"
+                            >
+                                Aguardando
+                            </span>
+                        </h2>
+
+                        <p class="text-secondary mt-3 mb-0">
+                            Resultado do KNN
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card bg-black text-light border-secondary h-100">
+
+                    <div class="card-body p-4">
+
+                        <p class="text-secondary">
+                            Filtro
+                        </p>
+
+                        <h2
+                            id="filtro"
+                            class="fw-bold"
+                        >
+                            --
+                        </h2>
+
+                        <p class="text-secondary mt-3 mb-0">
+                            Média móvel
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card bg-black text-light border-secondary h-100">
+
+                    <div class="card-body p-4">
+
+                        <p class="text-secondary">
+                            Última atualização
+                        </p>
+
+                        <h2
+                            id="horario"
+                            class="fw-bold"
+                        >
+                            --:--:--
+                        </h2>
+
+                        <p class="text-secondary mt-3 mb-0">
+                            Horário da medição
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card bg-black text-light border-secondary mb-4">
+
+            <div class="card-body p-4">
+
+                <p class="text-secondary mb-1">
+                    MONITORAMENTO
+                </p>
+
+                <h3 class="mb-4">
+                    Evolução do BPM
+                </h3>
+
+                <canvas id="graficoBpm"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class="card bg-black text-light border-secondary">
+
+            <div class="card-body p-4">
+
+                <p class="text-secondary mb-1">
+                    DADOS RECEBIDOS
+                </p>
+
+                <h3 class="mb-4">
+                    Histórico de Medições
+                </h3>
+
+                <div class="table-responsive">
+
+                    <table class="table table-dark table-hover">
+
+                        <thead>
+
+                            <tr>
+                                <th>Horário</th>
+                                <th>BPM</th>
+                                <th>Filtro</th>
+                                <th>Resultado</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="historico">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+const bpmElemento =
+document.getElementById("bpm");
+
+const filtroElemento =
+document.getElementById("filtro");
+
+const resultadoElemento =
+document.getElementById("resultado");
+
+const horarioElemento =
+document.getElementById("horario");
+
+const historico =
+document.getElementById("historico");
+
+const statusSistema =
+document.getElementById("statusSistema");
+
+let ultimoHorarioMostrado = null;
+
+const grafico = new Chart(
+    document.getElementById("graficoBpm"),
+    {
+        type: "line",
+
+        data: {
+            labels: [],
+
+            datasets: [{
+                label: "BPM",
+                data: [],
+                borderWidth: 3,
+                tension: 0.3
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            scales: {
+                y: {
+                    min: 40,
+                    max: 180
+                }
+            }
+        }
+    }
+);
+
+function atualizarTela(dados)
+{
+    bpmElemento.innerText =
+        dados.bpm;
+
+    filtroElemento.innerText =
+        dados.filtro;
+
+    resultadoElemento.innerText =
+        dados.resultado;
+
+    horarioElemento.innerText =
+        dados.horario;
+
+    resultadoElemento.className =
+        "badge";
+
+    if(dados.resultado == "Baixo")
+    {
+        resultadoElemento.classList.add(
+            "bg-primary"
+        );
+    }
+
+    if(dados.resultado == "Medio")
+    {
+        resultadoElemento.classList.add(
+            "bg-warning"
+        );
+    }
+
+    if(dados.resultado == "Alto")
+    {
+        resultadoElemento.classList.add(
+            "bg-danger"
+        );
+    }
+
+    if(ultimoHorarioMostrado != dados.horario)
+    {
+        ultimoHorarioMostrado =
+            dados.horario;
+
+        const linha =
+            document.createElement("tr");
+
+        linha.innerHTML =
+            "<td>" + dados.horario + "</td>" +
+            "<td>" + dados.bpm + "</td>" +
+            "<td>" + dados.filtro + "</td>" +
+            "<td>" + dados.resultado + "</td>";
+
+        historico.prepend(linha);
+
+        if(historico.children.length > 10)
+        {
+            historico.removeChild(
+                historico.lastChild
+            );
+        }
+
+        grafico.data.labels.push(
+            dados.horario
+        );
+
+        grafico.data.datasets[0].data.push(
+            dados.bpm
+        );
+
+        if(grafico.data.labels.length > 15)
+        {
+            grafico.data.labels.shift();
+
+            grafico.data.datasets[0].data.shift();
+        }
+
+        grafico.update();
+    }
+}
+
+async function buscarDados()
+{
+    const resposta =
+        await fetch("/dados");
+
+    if(resposta.status == 200)
+    {
+        const json =
+            await resposta.json();
+
+        atualizarTela(
+            json.dados
+        );
+    }
+}
+
+function verificarStatus()
+{
+    fetch("/status")
+
+    .then(resposta =>
+        resposta.json()
+    )
+
+    .then(dados => {
+
+        if(dados.sistema == "online")
+        {
+            statusSistema.innerText =
+                "● Sistema Online";
+
+            statusSistema.className =
+                "badge bg-success p-3";
+        }
+        else
+        {
+            statusSistema.innerText =
+                "● Sistema Offline";
+
+            statusSistema.className =
+                "badge bg-danger p-3";
+        }
+
+    })
+
+    .catch(() => {
+
+        statusSistema.innerText =
+            "● Sistema Offline";
+
+        statusSistema.className =
+            "badge bg-danger p-3";
+
+    });
+}
+
+setInterval(
+    buscarDados,
+    1000
+);
+
+setInterval(
+    verificarStatus,
+    1000
+);
+
+verificarStatus();
+
+</script>
+
+</body>
+
+</html>

@@ -99,6 +99,6 @@ Yan Martins Menegueli
 
 🎓 Projeto Acadêmico
 
-Projeto Integrado da 34 DS, envolvendo as disciplinas SEB, DAPL, IA e LPR.
+Projeto Integrado da 34-DS, envolvendo as disciplinas SEB, DAPL, IA e LPR.
 
 O objetivo é desenvolver uma solução distribuída semelhante às aplicações de Internet das Coisas (IoT), envolvendo aquisição de dados, comunicação entre sistemas, processamento e tomada de decisão.

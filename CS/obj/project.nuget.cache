@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Dp1KsQSJFDA=",
+  "dgSpecHash": "Zn0cL0uqfFM=",
   "success": true,
   "projectFilePath": "C:\\ProjetoIntegrado2\\CS\\PI.csproj",
   "expectedPackageFiles": [
@@ -21,7 +21,9 @@
     "C:\\Users\\Alunos\\.nuget\\packages\\runtime.native.system.io.ports\\10.0.10\\runtime.native.system.io.ports.10.0.10.nupkg.sha512",
     "C:\\Users\\Alunos\\.nuget\\packages\\runtime.osx-arm64.runtime.native.system.io.ports\\10.0.10\\runtime.osx-arm64.runtime.native.system.io.ports.10.0.10.nupkg.sha512",
     "C:\\Users\\Alunos\\.nuget\\packages\\runtime.osx-x64.runtime.native.system.io.ports\\10.0.10\\runtime.osx-x64.runtime.native.system.io.ports.10.0.10.nupkg.sha512",
-    "C:\\Users\\Alunos\\.nuget\\packages\\system.io.ports\\10.0.10\\system.io.ports.10.0.10.nupkg.sha512"
+    "C:\\Users\\Alunos\\.nuget\\packages\\system.codedom\\10.0.11\\system.codedom.10.0.11.nupkg.sha512",
+    "C:\\Users\\Alunos\\.nuget\\packages\\system.io.ports\\10.0.10\\system.io.ports.10.0.10.nupkg.sha512",
+    "C:\\Users\\Alunos\\.nuget\\packages\\system.management\\10.0.11\\system.management.10.0.11.nupkg.sha512"
   ],
   "logs": []
 }

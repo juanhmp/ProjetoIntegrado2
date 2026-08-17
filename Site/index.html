@@ -119,7 +119,7 @@
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 18px;
             margin-bottom: 24px;
         }
@@ -186,6 +186,35 @@
             background: #641818;
             color: #ff7777;
             border: 1px solid #bb3636;
+        }
+
+        .tendencia {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 9px 15px;
+            border-radius: 999px;
+            background: #263448;
+            color: #d7e2f2;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .tendencia-crescendo {
+            background: #123c2c;
+            color: #67f0ad;
+            border: 1px solid #1d855e;
+        }
+
+        .tendencia-diminuindo {
+            background: #4a1717;
+            color: #ff7d7d;
+            border: 1px solid #9b2d2d;
+        }
+
+        .tendencia-estavel {
+            background: #243247;
+            color: #9fc2f0;
+            border: 1px solid #40516d;
         }
 
         .bpm-critico {
@@ -451,6 +480,23 @@
 
             <div class="card">
                 <div class="card-label">
+                    Tendência
+                </div>
+
+                <div
+                    id="tendencia"
+                    class="tendencia"
+                >
+                    Aguardando
+                </div>
+
+                <div class="unidade" style="margin-top: 14px;">
+                    Últimas 5 leituras
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">
                     Última atualização
                 </div>
 
@@ -522,6 +568,7 @@
                         <th>BPM</th>
                         <th>Filtro</th>
                         <th>Resultado</th>
+                        <th>Tendência</th>
                     </tr>
                 </thead>
 
@@ -550,6 +597,9 @@ document.getElementById("resultado");
 
 const horarioElemento =
 document.getElementById("horario");
+
+const tendenciaElemento =
+document.getElementById("tendencia");
 
 const historico =
 document.getElementById("historico");
@@ -770,6 +820,42 @@ function atualizarTela(dados)
     horarioElemento.innerText =
         dados.horario;
 
+    tendenciaElemento.className =
+        "tendencia";
+
+    if(dados.tendencia == "Crescendo")
+    {
+        tendenciaElemento.innerText =
+            "↑ Crescendo";
+
+        tendenciaElemento.classList.add(
+            "tendencia-crescendo"
+        );
+    }
+    else if(dados.tendencia == "Diminuindo")
+    {
+        tendenciaElemento.innerText =
+            "↓ Diminuindo";
+
+        tendenciaElemento.classList.add(
+            "tendencia-diminuindo"
+        );
+    }
+    else if(dados.tendencia == "Estavel")
+    {
+        tendenciaElemento.innerText =
+            "→ Estável";
+
+        tendenciaElemento.classList.add(
+            "tendencia-estavel"
+        );
+    }
+    else
+    {
+        tendenciaElemento.innerText =
+            "Aguardando";
+    }
+
     resultadoElemento.className =
         "resultado";
 
@@ -843,6 +929,10 @@ function atualizarTela(dados)
 
             "<td>" +
             dados.resultado +
+            "</td>" +
+
+            "<td>" +
+            (dados.tendencia == "Estavel" ? "Estável" : dados.tendencia) +
             "</td>";
 
         if(

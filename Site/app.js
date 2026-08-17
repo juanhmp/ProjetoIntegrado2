@@ -17,10 +17,41 @@ let ultimoDado = {
     bpm: null,
     filtro: null,
     resultado: null,
+    tendencia: null,
     horario: null
 };
 
 let ultimaMedicao = null;
+
+let ultimasLeituras = [];
+
+function calcularTendencia()
+{
+    if(ultimasLeituras.length < 2)
+    {
+        return "Aguardando";
+    }
+
+    const primeira =
+        ultimasLeituras[0];
+
+    const ultima =
+        ultimasLeituras[
+            ultimasLeituras.length - 1
+        ];
+
+    if(ultima > primeira)
+    {
+        return "Crescendo";
+    }
+
+    if(ultima < primeira)
+    {
+        return "Diminuindo";
+    }
+
+    return "Estavel";
+}
 
 app.post("/medicao", (req, res) => {
 
@@ -47,6 +78,18 @@ app.post("/medicao", (req, res) => {
                 "ADC, BPM e filtro são obrigatórios"
         });
     }
+
+    ultimasLeituras.push(
+        Number(bpm)
+    );
+
+    if(ultimasLeituras.length > 5)
+    {
+        ultimasLeituras.shift();
+    }
+
+    const tendencia =
+        calcularTendencia();
 
     const caminhoPython =
         "C:\\Users\\Alunos\\AppData\\Local\\Programs\\Python\\Python314\\python.exe";
@@ -84,9 +127,13 @@ app.post("/medicao", (req, res) => {
                 });
             }
 
-            const respostaIA = JSON.parse(stdout.trim());
+            const respostaIA =
+                JSON.parse(
+                    stdout.trim()
+                );
 
-            const resultado = respostaIA.classification;
+            const resultado =
+                respostaIA.classification;
 
             const agora =
                 new Date();
@@ -96,6 +143,7 @@ app.post("/medicao", (req, res) => {
                 bpm: bpm,
                 filtro: filtro,
                 resultado: resultado,
+                tendencia: tendencia,
                 horario:
                     agora.toLocaleTimeString(
                         "pt-BR"

@@ -40,14 +40,33 @@ class Program
         {
             try
             {
-                string mensagem = porta.ReadLine();
+                if(!porta.IsOpen)
+                {
+                    Console.WriteLine(
+                        "Porta fechada. Tentando reabrir..."
+                    );
 
-                int inicioJson = mensagem.IndexOf("{");
+                    Thread.Sleep(500);
+
+                    porta.Open();
+
+                    Console.WriteLine(
+                        "Porta reaberta com sucesso."
+                    );
+                }
+
+                string mensagem =
+                    porta.ReadLine();
+
+                int inicioJson =
+                    mensagem.IndexOf("{");
 
                 if(inicioJson >= 0)
                 {
                     string json =
-                        mensagem.Substring(inicioJson).Trim();
+                        mensagem.Substring(
+                            inicioJson
+                        ).Trim();
 
                     if(
                         json.StartsWith("{") &&
@@ -94,10 +113,25 @@ class Program
                     "Aguardando dados do STM32..."
                 );
             }
+            catch(IOException erro)
+            {
+                Console.WriteLine(
+                    "Erro na Porta COM: " +
+                    erro.Message
+                );
+
+                if(porta.IsOpen)
+                {
+                    porta.Close();
+                }
+
+                Thread.Sleep(500);
+            }
             catch(Exception erro)
             {
                 Console.WriteLine(
-                    "Erro: " + erro.Message
+                    "Erro: " +
+                    erro.Message
                 );
             }
         }

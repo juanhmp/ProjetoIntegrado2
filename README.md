@@ -277,53 +277,51 @@ A interface começará a apresentar os dados recebidos.
 
 ## 💡 Decisões tomadas
 
-### USB CDC
-
-Foi escolhido **USB CDC** para permitir que o STM32 seja reconhecido pelo computador como uma Porta COM, facilitando a comunicação com a aplicação em C#.
-
-### JSON
-
-O formato **JSON** foi escolhido para organizar as informações transmitidas entre os diferentes módulos do sistema.
-
-Exemplo:
-
-```json
-{
-    "adc": 528,
-    "bpm": 58,
-    "filtro": "sem"
-}
-```
-
-### HTTP e API REST
-
-A comunicação entre a aplicação C# e o servidor utiliza **HTTP**, permitindo separar a aquisição dos dados da aplicação Web.
-
 ### Identificação automática da Porta COM
 
-Foi implementada uma assinatura em **hexadecimal** para permitir que a aplicação C# identifique automaticamente a porta correspondente ao STM32.
+Para evitar a necessidade de definir manualmente uma Porta COM específica, foi implementado um protocolo de identificação utilizando uma assinatura hexadecimal.
 
-Isso evita depender de uma porta fixa, como COM7 ou COM8, já que o número atribuído pelo Windows pode mudar.
+A assinatura utilizada é:
+
+`AA 55 01 FF`
+
+A aplicação em C# verifica as portas disponíveis e identifica automaticamente aquela que está recebendo a assinatura enviada pelo STM32.
+
+Isso permite que o sistema continue funcionando mesmo que o Windows altere o número da porta, por exemplo, de COM7 para COM8.
 
 ### KNN
 
-O algoritmo **K-Nearest Neighbors** foi escolhido para realizar a classificação das medições em três categorias.
+Para realizar a classificação das medições, foi escolhido o algoritmo K-Nearest Neighbors (KNN).
 
-O modelo é simples de implementar e permite demonstrar a utilização de Machine Learning no processamento dos dados do projeto.
+O modelo utiliza o valor de BPM recebido e realiza a classificação em três categorias:
 
-### Últimas 5 leituras
+- Baixo
+- Medio
+- Alto
 
-Para detectar a tendência, o sistema mantém as últimas cinco medições de BPM.
+Foi utilizado o KNN para aplicar os conceitos de classificação estudados na disciplina de Inteligência Artificial.
 
-Essa análise foi mantida separada do KNN, pois possui uma finalidade diferente: identificar a evolução recente do valor, enquanto a IA classifica a medição atual.
+### Tendência das últimas leituras
 
-### Interface em tempo real
+Para identificar se o BPM está aumentando ou diminuindo, foi decidido analisar as últimas 5 leituras recebidas pelo sistema.
 
-A interface consulta periodicamente o servidor para atualizar os dados apresentados ao usuário.
+A tendência pode ser apresentada como:
 
-Também foram implementados alertas visuais para facilitar a identificação de medições classificadas como críticas.
+- ↑ Crescendo
+- ↓ Diminuindo
+- → Estável
 
----
+Essa análise funciona separadamente da classificação realizada pela Inteligência Artificial.
+
+### Interface Web
+
+Na interface foram adicionados recursos para facilitar a visualização e o acompanhamento das medições, como:
+
+- Gráfico de evolução do BPM;
+- Histórico das últimas medições;
+- Indicação da tendência;
+- Estado da conexão;
+- Alertas visuais para classificações críticas.
 
 ## 🛠️ Tecnologias utilizadas
 

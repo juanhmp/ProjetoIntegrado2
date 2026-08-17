@@ -61,6 +61,7 @@ static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 int calcularMediaMovel(int novaLeitura);
+void verificarIdentificacao(uint8_t* Buf, uint32_t Len);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -108,13 +109,19 @@ int main(void)
   {
       HAL_ADC_Start(&hadc1);
 
-      HAL_ADC_PollForConversion(&hadc1,HAL_MAX_DELAY);
+      HAL_ADC_PollForConversion(
+          &hadc1,
+          HAL_MAX_DELAY
+      );
 
-      valorADC = HAL_ADC_GetValue(&hadc1);
+      valorADC =
+          HAL_ADC_GetValue(&hadc1);
 
       HAL_ADC_Stop(&hadc1);
 
-      bpm = 40 + ((valorADC * 140) / 4095);
+      bpm =
+          40 +
+          ((valorADC * 140) / 4095);
 
       uint8_t identificador[4] =
       {
@@ -124,13 +131,17 @@ int main(void)
           0xFF
       };
 
-      CDC_Transmit_FS(identificador, 4);
+      CDC_Transmit_FS(
+          identificador,
+          4
+      );
 
       HAL_Delay(50);
 
       if(BOTAO == 0)
       {
-          bpmEnviado = calcularMediaMovel(bpm);
+          bpmEnviado =
+              calcularMediaMovel(bpm);
 
           sprintf(
               mensagem,
@@ -151,7 +162,10 @@ int main(void)
           );
       }
 
-      CDC_Transmit_FS((uint8_t*)mensagem, strlen(mensagem));
+      CDC_Transmit_FS(
+          (uint8_t*)mensagem,
+          strlen(mensagem)
+      );
 
       HAL_Delay(1000);
 
@@ -298,6 +312,33 @@ int calcularMediaMovel(int novaLeitura)
     }
 
     return soma / quantidade;
+}
+
+void verificarIdentificacao(uint8_t* Buf, uint32_t Len)
+{
+    uint8_t resposta[4] =
+    {
+        0xCC,
+        0x33,
+        0x10,
+        0xEE
+    };
+
+    if(Len == 4)
+    {
+        if(
+            Buf[0] == 0xAA &&
+            Buf[1] == 0x55 &&
+            Buf[2] == 0x01 &&
+            Buf[3] == 0xFF
+        )
+        {
+            CDC_Transmit_FS(
+                resposta,
+                4
+            );
+        }
+    }
 }
 /* USER CODE END 4 */
 

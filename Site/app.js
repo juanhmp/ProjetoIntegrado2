@@ -84,8 +84,9 @@ app.post("/medicao", (req, res) => {
                 });
             }
 
-            const resultado =
-                stdout.trim();
+            const respostaIA = JSON.parse(stdout.trim());
+
+            const resultado = respostaIA.classification;
 
             const agora =
                 new Date();

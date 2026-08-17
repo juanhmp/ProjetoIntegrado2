@@ -1,4 +1,4 @@
-10:59:00 **** Incremental Build of configuration Debug for project ProjetoIntegrado ****
+08:29:56 **** Incremental Build of configuration Debug for project ProjetoIntegrado ****
 make -j20 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F103xB -DDEBUG -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
 arm-none-eabi-gcc -o "ProjetoIntegrado.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\ProjetoIntegrado2\ProjetoIntegrado\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ProjetoIntegrado.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -8,27 +8,17 @@ arm-none-eabi-objdump -h -S  ProjetoIntegrado.elf  > "ProjetoIntegrado.list"
 arm-none-eabi-objcopy  -O binary  ProjetoIntegrado.elf  "ProjetoIntegrado.bin"
 arm-none-eabi-size   ProjetoIntegrado.elf 
    text	   data	    bss	    dec	    hex	filename
-  34916	    488	   6272	  41676	   a2cc	ProjetoIntegrado.elf
+  34948	    488	   6272	  41708	   a2ec	ProjetoIntegrado.elf
 Finished building: default.size.stdout
- 
 Finished building: ProjetoIntegrado.bin
+ 
  
 Finished building: ProjetoIntegrado.list
  
-10:59:20 **** Incremental Build of configuration Debug for project ProjetoIntegrado ****
+08:30:27 **** Incremental Build of configuration Debug for project ProjetoIntegrado ****
 make -j20 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F103xB -DDEBUG -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "ProjetoIntegrado.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\ProjetoIntegrado2\ProjetoIntegrado\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ProjetoIntegrado.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: ProjetoIntegrado.elf
- 
-arm-none-eabi-objdump -h -S  ProjetoIntegrado.elf  > "ProjetoIntegrado.list"
-arm-none-eabi-objcopy  -O binary  ProjetoIntegrado.elf  "ProjetoIntegrado.bin"
 arm-none-eabi-size   ProjetoIntegrado.elf 
    text	   data	    bss	    dec	    hex	filename
-  34916	    488	   6272	  41676	   a2cc	ProjetoIntegrado.elf
+  34948	    488	   6272	  41708	   a2ec	ProjetoIntegrado.elf
 Finished building: default.size.stdout
- 
-Finished building: ProjetoIntegrado.bin
- 
-Finished building: ProjetoIntegrado.list
  

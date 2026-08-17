@@ -108,25 +108,13 @@ int main(void)
   {
       HAL_ADC_Start(&hadc1);
 
-      HAL_ADC_PollForConversion(&hadc1,HAL_MAX_DELAY);
+      HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 
       valorADC = HAL_ADC_GetValue(&hadc1);
 
       HAL_ADC_Stop(&hadc1);
 
       bpm = 40 + ((valorADC * 140) / 4095);
-
-      uint8_t identificador[4] =
-      {
-          0xAA,
-          0x55,
-          0x01,
-          0xFF
-      };
-
-      CDC_Transmit_FS(identificador, 4);
-
-      HAL_Delay(50);
 
       if(BOTAO == 0)
       {
@@ -151,7 +139,10 @@ int main(void)
           );
       }
 
-      CDC_Transmit_FS((uint8_t*)mensagem, strlen(mensagem));
+      CDC_Transmit_FS(
+          (uint8_t*)mensagem,
+          strlen(mensagem)
+      );
 
       HAL_Delay(1000);
 

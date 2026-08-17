@@ -325,26 +325,21 @@ Na interface foram adicionados recursos para facilitar a visualização e o acom
 
 ## 🛠️ Tecnologias utilizadas
 
-- STM32
-- ADC
-- GPIO
-- USB CDC
-- Porta COM
-- C
-- C#
-- JavaScript
-- Node.js
-- Express
-- Python
-- scikit-learn
-- KNN
-- HTML
-- CSS
-- JSON
-- HTTP
-- API REST
+![C](https://img.shields.io/badge/C-STM32-00599C?style=for-the-badge&logo=c&logoColor=white)
 
----
+![C%23](https://img.shields.io/badge/C%23-APLICAÇÃO_DESKTOP-512BD4?style=for-the-badge&logo=csharp&logoColor=white)
+
+![Python](https://img.shields.io/badge/PYTHON-INTELIGÊNCIA_ARTIFICIAL-3776AB?style=for-the-badge&logo=python&logoColor=white)
+
+![JavaScript](https://img.shields.io/badge/JAVASCRIPT-WEB_%2F_API-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+![HTML5](https://img.shields.io/badge/HTML5-INTERFACE_WEB-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+
+![CSS3](https://img.shields.io/badge/CSS3-ESTILIZAÇÃO-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+
+![Git](https://img.shields.io/badge/GIT-VERSIONAMENTO-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+![GitHub](https://img.shields.io/badge/GITHUB-REPOSITÓRIO-181717?style=for-the-badge&logo=github&logoColor=white)
 
 ## 📁 Estrutura geral
 

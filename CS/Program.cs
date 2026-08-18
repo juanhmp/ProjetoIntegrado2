@@ -18,6 +18,7 @@ class Program
         {
             urlServidor =
                 "https://projeto-integrado2-beryl.vercel.app/api/medicao";
+        }
         else
         {
             urlServidor =
@@ -28,6 +29,7 @@ class Program
             EncontrarSTM32();
 
         if(nomePorta == null)
+        
         {
             Console.WriteLine(
                 "STM32 não encontrado"

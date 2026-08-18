@@ -86,7 +86,7 @@ class Program
 
                         HttpResponseMessage resposta =
                             await cliente.PostAsync(
-                                "http://localhost:3000/medicao",
+                                "https://projeto-integrado2-z7zy.vercel.app/api/medicao",
                                 conteudo
                             );
 

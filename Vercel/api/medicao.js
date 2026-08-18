@@ -132,11 +132,21 @@ export default
             ).origin;
 
         const respostaIA =
-            await fetch(
-                origem +
-                "/api/ia?bpm=" +
-                encodeURIComponent(bpm)
-            );
+    await fetch(
+        origem + "/api/ia",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+                bpm: bpm
+            })
+        }
+    );
 
         if(!respostaIA.ok)
         {

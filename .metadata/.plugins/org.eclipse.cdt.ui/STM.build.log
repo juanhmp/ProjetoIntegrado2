@@ -1,0 +1,10 @@
+08:51:11 **** Incremental Build of configuration Debug for project STM ****
+make -j20 all 
+arm-none-eabi-size   STM.elf 
+   text	   data	    bss	    dec	    hex	filename
+  34948	    488	   6272	  41708	   a2ec	STM.elf
+Finished building: default.size.stdout
+ 
+
+08:51:11 Build Finished. 0 errors, 0 warnings. (took 152ms)
+

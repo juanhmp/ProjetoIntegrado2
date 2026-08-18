@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Ports;
 using System.Net.Http;
 using System.Text;
@@ -9,31 +10,78 @@ class Program
 {
     static async Task Main()
     {
-        string nomePorta = EncontrarSTM32();
+        bool usarVercel = true;
+
+        string urlServidor;
+
+        if(usarVercel)
+        {
+            urlServidor =
+                "https://projeto-integrado2-z7zy.vercel.app/api/medicao";
+        }
+        else
+        {
+            urlServidor =
+                "http://localhost:3000/medicao";
+        }
+
+        string nomePorta =
+            EncontrarSTM32();
 
         if(nomePorta == null)
         {
-            Console.WriteLine("STM32 não encontrado");
+            Console.WriteLine(
+                "STM32 não encontrado"
+            );
+
             return;
         }
 
         Console.WriteLine();
-        Console.WriteLine("STM32 encontrado em: " + nomePorta);
+        Console.WriteLine(
+            "STM32 encontrado em: "
+            + nomePorta
+        );
+
         Console.WriteLine();
 
-        SerialPort porta = new SerialPort(
-            nomePorta,
-            115200
+        if(usarVercel)
+        {
+            Console.WriteLine(
+                "Servidor: Vercel"
+            );
+        }
+        else
+        {
+            Console.WriteLine(
+                "Servidor: Localhost"
+            );
+        }
+
+        Console.WriteLine(
+            "URL: " + urlServidor
         );
+
+        Console.WriteLine();
+
+        SerialPort porta =
+            new SerialPort(
+                nomePorta,
+                115200
+            );
 
         porta.NewLine = "\n";
         porta.ReadTimeout = 3000;
 
         porta.Open();
 
-        using HttpClient cliente = new HttpClient();
+        using HttpClient cliente =
+            new HttpClient();
 
-        Console.WriteLine("Aguardando dados...");
+        Console.WriteLine(
+            "Aguardando dados..."
+        );
+
         Console.WriteLine();
 
         while(true)
@@ -69,12 +117,14 @@ class Program
                         ).Trim();
 
                     if(
-                        json.StartsWith("{") &&
+                        json.StartsWith("{")
+                        &&
                         json.EndsWith("}")
                     )
                     {
                         Console.WriteLine(
-                            "Recebido: " + json
+                            "Recebido: "
+                            + json
                         );
 
                         StringContent conteudo =
@@ -86,21 +136,23 @@ class Program
 
                         HttpResponseMessage resposta =
                             await cliente.PostAsync(
-                                "http://localhost:3000/medicao",
+                                urlServidor,
                                 conteudo
                             );
 
                         string retorno =
-                            await resposta.Content.ReadAsStringAsync();
+                            await resposta
+                                .Content
+                                .ReadAsStringAsync();
 
                         Console.WriteLine(
-                            "Status: " +
-                            resposta.StatusCode
+                            "Status: "
+                            + resposta.StatusCode
                         );
 
                         Console.WriteLine(
-                            "Servidor: " +
-                            retorno
+                            "Servidor: "
+                            + retorno
                         );
 
                         Console.WriteLine();
@@ -116,8 +168,8 @@ class Program
             catch(IOException erro)
             {
                 Console.WriteLine(
-                    "Erro na Porta COM: " +
-                    erro.Message
+                    "Erro na Porta COM: "
+                    + erro.Message
                 );
 
                 if(porta.IsOpen)
@@ -127,11 +179,18 @@ class Program
 
                 Thread.Sleep(500);
             }
+            catch(HttpRequestException erro)
+            {
+                Console.WriteLine(
+                    "Erro ao acessar o servidor: "
+                    + erro.Message
+                );
+            }
             catch(Exception erro)
             {
                 Console.WriteLine(
-                    "Erro: " +
-                    erro.Message
+                    "Erro: "
+                    + erro.Message
                 );
             }
         }
@@ -157,7 +216,8 @@ class Program
         foreach(string nome in portas)
         {
             Console.WriteLine(
-                "Testando " + nome
+                "Testando "
+                + nome
             );
 
             SerialPort porta =
@@ -166,13 +226,16 @@ class Program
                     115200
                 );
 
-            porta.ReadTimeout = 1500;
+            porta.ReadTimeout =
+                1500;
 
             try
             {
                 porta.Open();
 
-                Thread.Sleep(1200);
+                Thread.Sleep(
+                    1200
+                );
 
                 byte[] buffer =
                     new byte[512];
@@ -193,10 +256,21 @@ class Program
                 )
                 {
                     if(
-                        buffer[i] == assinatura[0] &&
-                        buffer[i + 1] == assinatura[1] &&
-                        buffer[i + 2] == assinatura[2] &&
-                        buffer[i + 3] == assinatura[3]
+                        buffer[i]
+                        ==
+                        assinatura[0]
+                        &&
+                        buffer[i + 1]
+                        ==
+                        assinatura[1]
+                        &&
+                        buffer[i + 2]
+                        ==
+                        assinatura[2]
+                        &&
+                        buffer[i + 3]
+                        ==
+                        assinatura[3]
                     )
                     {
                         return nome;

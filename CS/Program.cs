@@ -17,7 +17,7 @@ class Program
         if(usarVercel)
         {
             urlServidor =
-                "https://projeto-integrado2-beryl.vercel.app/api/medicao";
+                "https://projeto-integrado2-rm8h-liart.vercel.app/api/medicao";
         }
         else
         {

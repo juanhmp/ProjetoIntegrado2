@@ -1,8 +1,18 @@
-# 📊 Projeto Integrado 2
+<h1 align="center">📊 Projeto Integrado 2</h1>
 
-Projeto desenvolvido para integrar as disciplinas de **Sistemas Embarcados (SEB)**, **Desenvolvimento de Aplicativos (DAPL)**, **Inteligência Artificial (IA)** e **Linguagens de Programação (LPR)**.
+<p align="center">
+  Sistema integrado para aquisição, processamento, classificação e visualização de dados utilizando STM32, C#, Inteligência Artificial e interface Web.
+</p>
 
-O sistema realiza a aquisição, transmissão, processamento, classificação e visualização de dados, simulando um sistema de **monitoramento cardíaco**.
+<p align="center">
+  <img src="https://img.shields.io/badge/STM32-03234B?style=for-the-badge&logo=stmicroelectronics&logoColor=white" alt="STM32">
+  <img src="https://img.shields.io/badge/C%23-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt="C#">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="scikit-learn">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+</p>
 
 ---
 
@@ -199,8 +209,6 @@ Compile e grave o firmware na placa.
 
 O dispositivo deverá ser reconhecido pelo Windows como uma Porta COM.
 
----
-
 ### 2. Instalar as dependências do servidor
 
 Na pasta do projeto, execute:
@@ -215,8 +223,6 @@ Caso necessário:
 npm install express
 ```
 
----
-
 ### 3. Preparar a Inteligência Artificial
 
 O computador deve possuir Python e as bibliotecas necessárias.
@@ -228,8 +234,6 @@ pip install scikit-learn
 ```
 
 Verifique também se o caminho do executável Python configurado no servidor corresponde ao computador utilizado.
-
----
 
 ### 4. Iniciar o servidor
 
@@ -245,8 +249,6 @@ O servidor será iniciado em:
 http://localhost:3000
 ```
 
----
-
 ### 5. Executar a aplicação C#
 
 Execute a aplicação responsável pela comunicação serial.
@@ -260,8 +262,6 @@ dotnet run
 O programa procura a Porta COM correspondente ao STM32 e começa a receber as medições.
 
 As informações são então enviadas automaticamente ao servidor.
-
----
 
 ### 6. Abrir a interface
 
@@ -323,23 +323,7 @@ Na interface foram adicionados recursos para facilitar a visualização e o acom
 - Estado da conexão;
 - Alertas visuais para classificações críticas.
 
-## 🛠️ Tecnologias utilizadas
-
-![C](https://img.shields.io/badge/C-STM32-00599C?style=for-the-badge&logo=c&logoColor=white)
-
-![C%23](https://img.shields.io/badge/C%23-APLICAÇÃO_DESKTOP-512BD4?style=for-the-badge&logo=csharp&logoColor=white)
-
-![Python](https://img.shields.io/badge/PYTHON-INTELIGÊNCIA_ARTIFICIAL-3776AB?style=for-the-badge&logo=python&logoColor=white)
-
-![JavaScript](https://img.shields.io/badge/JAVASCRIPT-WEB_%2F_API-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-
-![HTML5](https://img.shields.io/badge/HTML5-INTERFACE_WEB-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-
-![CSS3](https://img.shields.io/badge/CSS3-ESTILIZAÇÃO-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-
-![Git](https://img.shields.io/badge/GIT-VERSIONAMENTO-F05032?style=for-the-badge&logo=git&logoColor=white)
-
-![GitHub](https://img.shields.io/badge/GITHUB-REPOSITÓRIO-181717?style=for-the-badge&logo=github&logoColor=white)
+---
 
 ## 📁 Estrutura geral
 

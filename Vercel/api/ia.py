@@ -3,7 +3,6 @@ import csv
 import json
 
 from http.server import BaseHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs
 from sklearn.neighbors import KNeighborsClassifier
 
 
@@ -41,32 +40,44 @@ def load_dataset(path):
     return X, y
 
 
-X, y = load_dataset(
-    DATASET_PATH
-)
+X, y = load_dataset(DATASET_PATH)
 
 modelo = KNeighborsClassifier(
     n_neighbors=N_NEIGHBORS
 )
 
-modelo.fit(
-    X,
-    y
-)
+modelo.fit(X, y)
 
 
 class handler(BaseHTTPRequestHandler):
 
-    def do_GET(self):
+    def do_POST(self):
 
-        parametros = parse_qs(
-            urlparse(
-                self.path
-            ).query
+        tamanho = int(
+            self.headers.get(
+                "Content-Length",
+                0
+            )
         )
 
-        if "bpm" not in parametros:
+        corpo = self.rfile.read(
+            tamanho
+        )
 
+        try:
+            dados = json.loads(
+                corpo.decode("utf-8")
+            )
+        except:
+            self.enviar_resposta(
+                {
+                    "error": "JSON inválido"
+                },
+                400
+            )
+            return
+
+        if "bpm" not in dados:
             self.enviar_resposta(
                 {
                     "error":
@@ -74,17 +85,13 @@ class handler(BaseHTTPRequestHandler):
                 },
                 400
             )
-
             return
 
         try:
-
             bpm = float(
-                parametros["bpm"][0]
+                dados["bpm"]
             )
-
-        except ValueError:
-
+        except:
             self.enviar_resposta(
                 {
                     "error":
@@ -92,40 +99,19 @@ class handler(BaseHTTPRequestHandler):
                 },
                 400
             )
-
             return
 
-
-        sample = [
-            bpm
-        ]
-
-
-        if len(sample) != len(X[0]):
-
-            self.enviar_resposta(
-                {
-                    "error":
-                        "Quantidade de características inválida"
-                },
-                400
-            )
-
-            return
-
+        sample = [bpm]
 
         prediction = modelo.predict(
             [sample]
         )[0]
 
-
         proba = modelo.predict_proba(
             [sample]
         )[0]
 
-
         probabilities = {
-
             label: float(probabilidade)
 
             for label, probabilidade
@@ -135,18 +121,11 @@ class handler(BaseHTTPRequestHandler):
             )
         }
 
-
         resposta = {
-            "bpm":
-                bpm,
-
-            "classification":
-                prediction,
-
-            "probabilities":
-                probabilities
+            "bpm": bpm,
+            "classification": prediction,
+            "probabilities": probabilities
         }
-
 
         self.enviar_resposta(
             resposta,
@@ -166,9 +145,7 @@ class handler(BaseHTTPRequestHandler):
             "utf-8"
         )
 
-        self.send_response(
-            status
-        )
+        self.send_response(status)
 
         self.send_header(
             "Content-Type",
@@ -177,9 +154,7 @@ class handler(BaseHTTPRequestHandler):
 
         self.send_header(
             "Content-Length",
-            str(
-                len(conteudo)
-            )
+            str(len(conteudo))
         )
 
         self.end_headers()

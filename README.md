@@ -12,7 +12,17 @@
   <img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="scikit-learn">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel">
 </p>
+
+---
+
+## 🎥 Demonstração
+
+Vídeo apresentando o projeto completo, incluindo os códigos desenvolvidos, circuito, STM32, comunicação pela Porta COM, aplicação C#, Inteligência Artificial e interface Web funcionando em conjunto.
+
+> ▶️ **Vídeo do projeto:**  
+> [Assistir no YouTube](COLOQUE_O_LINK_DO_VIDEO_AQUI)
 
 ---
 
@@ -21,6 +31,8 @@
 Desenvolver um sistema distribuído capaz de coletar uma variável analógica através de um STM32, transmitir os dados para um computador, processar as informações e utilizar Inteligência Artificial para classificar as medições.
 
 O sistema também apresenta os resultados em uma interface Web, permitindo acompanhar as medições em tempo real.
+
+O projeto pode funcionar tanto em **ambiente local** quanto através da versão **online publicada na Vercel**.
 
 ---
 
@@ -40,6 +52,14 @@ Servidor Web / API REST
 Inteligência Artificial
   ↓
 Interface Web
+```
+
+A aplicação C# permite escolher entre o servidor local e o servidor online:
+
+```text
+                    ┌──→ Servidor Local → IA Local → Site Local
+STM32 → Porta COM → C#
+                    └──→ Vercel → IA Online → Site Online
 ```
 
 ### 1. STM32
@@ -70,39 +90,51 @@ A aplicação em C# realiza a comunicação entre o STM32 e o servidor.
 
 Suas principais funções são:
 
-- Detectar a Porta COM utilizada pelo STM32;
+- Detectar automaticamente a Porta COM utilizada pelo STM32;
 - Receber continuamente os dados;
 - Identificar e separar os dados recebidos;
 - Trabalhar com as informações em formato JSON;
-- Enviar as medições ao servidor através de HTTP.
+- Enviar as medições ao servidor através de HTTP;
+- Permitir a utilização do servidor local ou da versão online.
 
 Para facilitar a identificação automática do dispositivo, foi utilizado um **protocolo com assinatura hexadecimal**.
 
 A assinatura utilizada permite que o programa procure entre as portas disponíveis e identifique qual delas corresponde ao STM32, evitando a necessidade de configurar manualmente uma COM específica.
 
+A mesma aplicação C# é utilizada nos dois modos de funcionamento.
+
 ---
 
 ### 3. Servidor Web / API REST
 
-O servidor foi desenvolvido utilizando **JavaScript com Node.js e Express**.
+O projeto possui uma versão local do servidor desenvolvida utilizando **JavaScript com Node.js e Express** e uma versão online utilizando funções disponibilizadas através da **Vercel**.
 
-Ele é responsável por:
+O servidor é responsável por:
 
 - Receber as medições enviadas pelo C#;
 - Validar os dados recebidos;
-- Executar o módulo de Inteligência Artificial;
+- Encaminhar os dados para o módulo de Inteligência Artificial;
 - Armazenar a última medição;
 - Calcular a tendência das últimas leituras;
 - Disponibilizar os dados para a interface Web.
 
 A comunicação é realizada utilizando **HTTP e JSON**.
 
-Entre as rotas utilizadas estão:
+Na versão local, entre as rotas utilizadas estão:
 
 ```text
 POST /medicao
 GET  /dados
 GET  /status
+```
+
+Na versão online, são utilizadas:
+
+```text
+POST /api/medicao
+GET  /api/dados
+GET  /api/status
+POST /api/ia
 ```
 
 ---
@@ -119,9 +151,11 @@ Medio
 Alto
 ```
 
-O KNN compara uma nova medição com os exemplos utilizados no treinamento e utiliza os vizinhos mais próximos para determinar a classificação.
+O KNN compara uma nova medição com os exemplos presentes no dataset e utiliza os vizinhos mais próximos para determinar a classificação.
 
 A implementação utiliza a biblioteca **scikit-learn** em Python.
+
+A IA também pode retornar as probabilidades associadas às classes analisadas.
 
 ---
 
@@ -162,6 +196,8 @@ São exibidos:
 
 Quando uma medição é classificada como **Alto**, a interface apresenta uma indicação visual de alerta.
 
+A interface também possui uma versão publicada online através da Vercel.
+
 ---
 
 ## 🔄 Fluxo completo
@@ -179,9 +215,9 @@ Aplicação C#
        ↓
       JSON
        ↓
-   HTTP POST
+      HTTP
        ↓
-API REST / Node.js
+Servidor / API REST
        ↓
        ├──────────────→ Análise das últimas leituras
        │                       ↓
@@ -199,9 +235,55 @@ API REST / Node.js
 
 ---
 
+## 🌐 Modos de funcionamento
+
+O projeto pode funcionar de duas formas.
+
+### Local
+
+No modo local, todos os módulos de processamento são executados no próprio computador.
+
+```text
+STM32
+  ↓
+C#
+  ↓
+Servidor Node.js
+  ↓
+IA Python
+  ↓
+Site Local
+```
+
+### Online
+
+No modo online, o C# continua responsável pela comunicação com o STM32, porém envia as medições através da Internet para a aplicação publicada na Vercel.
+
+```text
+STM32
+  ↓
+C#
+  ↓
+Internet
+  ↓
+Vercel
+  ↓
+API
+  ↓
+IA
+  ↓
+Site Online
+```
+
+A escolha entre os dois modos é realizada na aplicação C#.
+
+---
+
 ## ▶️ Como usar
 
-### 1. STM32
+### Modo Local
+
+#### 1. STM32
 
 Conecte o STM32 ao computador através da USB utilizada para comunicação CDC.
 
@@ -209,9 +291,9 @@ Compile e grave o firmware na placa.
 
 O dispositivo deverá ser reconhecido pelo Windows como uma Porta COM.
 
-### 2. Instalar as dependências do servidor
+#### 2. Instalar as dependências do servidor
 
-Na pasta do projeto, execute:
+Na pasta local do projeto, execute:
 
 ```bash
 npm install
@@ -223,7 +305,7 @@ Caso necessário:
 npm install express
 ```
 
-### 3. Preparar a Inteligência Artificial
+#### 3. Preparar a Inteligência Artificial
 
 O computador deve possuir Python e as bibliotecas necessárias.
 
@@ -233,9 +315,7 @@ Instale o scikit-learn:
 pip install scikit-learn
 ```
 
-Verifique também se o caminho do executável Python configurado no servidor corresponde ao computador utilizado.
-
-### 4. Iniciar o servidor
+#### 4. Iniciar o servidor
 
 Execute:
 
@@ -249,21 +329,17 @@ O servidor será iniciado em:
 http://localhost:3000
 ```
 
-### 5. Executar a aplicação C#
+#### 5. Executar a aplicação C#
 
-Execute a aplicação responsável pela comunicação serial.
-
-Por exemplo:
+Configure a aplicação C# para utilizar o modo local e execute:
 
 ```bash
 dotnet run
 ```
 
-O programa procura a Porta COM correspondente ao STM32 e começa a receber as medições.
+O programa procura automaticamente a Porta COM correspondente ao STM32 e começa a receber as medições.
 
-As informações são então enviadas automaticamente ao servidor.
-
-### 6. Abrir a interface
+#### 6. Abrir a interface
 
 No navegador, acesse:
 
@@ -272,6 +348,30 @@ http://localhost:3000
 ```
 
 A interface começará a apresentar os dados recebidos.
+
+---
+
+### Modo Online
+
+#### 1. STM32
+
+Conecte o STM32 ao computador e execute normalmente o firmware.
+
+#### 2. Aplicação C#
+
+Configure a aplicação C# para utilizar a versão online e execute:
+
+```bash
+dotnet run
+```
+
+A aplicação identifica automaticamente a Porta COM e envia as medições para a API publicada na Vercel.
+
+#### 3. Interface Web
+
+Abra a interface publicada na Vercel.
+
+Não é necessário executar o servidor Node.js local para utilizar o modo online.
 
 ---
 
@@ -288,6 +388,22 @@ A assinatura utilizada é:
 A aplicação em C# verifica as portas disponíveis e identifica automaticamente aquela que está recebendo a assinatura enviada pelo STM32.
 
 Isso permite que o sistema continue funcionando mesmo que o Windows altere o número da porta, por exemplo, de COM7 para COM8.
+
+### JSON
+
+O formato **JSON** foi utilizado para estruturar os dados transmitidos entre os diferentes módulos do sistema.
+
+Por exemplo:
+
+```json
+{
+    "adc": 528,
+    "bpm": 58,
+    "filtro": "sem"
+}
+```
+
+Isso permite organizar as informações transmitidas entre o STM32, a aplicação C#, o servidor e a interface Web.
 
 ### KNN
 
@@ -313,6 +429,14 @@ A tendência pode ser apresentada como:
 
 Essa análise funciona separadamente da classificação realizada pela Inteligência Artificial.
 
+### Funcionamento local e online
+
+O projeto foi estruturado para permitir dois modos de funcionamento.
+
+O modo local pode ser utilizado durante o desenvolvimento e testes, enquanto a versão online utiliza a aplicação publicada na Vercel.
+
+A mesma aplicação C# pode ser utilizada nos dois modos.
+
 ### Interface Web
 
 Na interface foram adicionados recursos para facilitar a visualização e o acompanhamento das medições, como:
@@ -330,19 +454,40 @@ Na interface foram adicionados recursos para facilitar a visualização e o acom
 ```text
 ProjetoIntegrado2/
 │
-├── STM32/
-│   └── Firmware
+├── STM/
 │
 ├── CS/
-│   └── Aplicação C#
 │
-├── IA/
-│   └── ia.py
+├── Local/
+│   ├── IA/
+│   │   ├── ia.py
+│   │   └── dataset.csv
+│   │
+│   └── Site/
+│       ├── index.html
+│       └── app.js
 │
-└── Site/
-    ├── index.html
-    └── app.js
+├── Vercel/
+│   ├── api/
+│   │   ├── ia.py
+│   │   ├── dataset.csv
+│   │   ├── medicao.js
+│   │   ├── dados.js
+│   │   └── status.js
+│   │
+│   ├── public/
+│   │   └── index.html
+│   │
+│   └── requirements.txt
+│
+├── .gitignore
+└── README.md
 ```
+
+- **STM** — firmware responsável pela aquisição e envio dos dados;
+- **CS** — aplicação responsável pela comunicação serial e envio das medições;
+- **Local** — arquivos utilizados para executar o servidor, IA e interface localmente;
+- **Vercel** — arquivos utilizados para executar a versão online.
 
 ---
 

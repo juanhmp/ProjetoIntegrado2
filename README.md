@@ -504,7 +504,7 @@ Projeto Integrado da **34-DS**, envolvendo as disciplinas:
 
 - SEB — Sistemas Embarcados
 - DAPL — Desenvolvimento de Aplicativos
-- IA — Inteligência Artificial
+- CGR — Computação Gráfica (Inteligência Artificial)
 - LPR — Linguagens de Programação
 
 O projeto demonstra a integração entre **hardware, comunicação serial, aplicação intermediária, servidor Web, Inteligência Artificial e interface Web**, formando uma solução distribuída semelhante às utilizadas em sistemas de Internet das Coisas (IoT).

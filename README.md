@@ -22,7 +22,7 @@
 Vídeo apresentando o projeto completo, incluindo os códigos desenvolvidos, circuito, STM32, comunicação pela Porta COM, aplicação C#, Inteligência Artificial e interface Web funcionando em conjunto.
 
 > ▶️ **Vídeo do projeto:**  
-> [Assistir no YouTube](COLOQUE_O_LINK_DO_VIDEO_AQUI)
+> [Assistir no YouTube](https://youtu.be/eY65fTqLqeg?is=cktXnfAypk6cEjfL)
 
 ---
 
